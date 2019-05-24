@@ -14,14 +14,15 @@
 template<const int BYTES>
 class UniqCounterFirstApproach : public UniqCounterInterface {
 	static const int N = BYTES / sizeof(std::set<int>::node_type); 
-	HasherP hasherBigNumber; 
+	static HasherP hasherBigNumber; 
 	std::set<unsigned> s;
 	int n;
 	
 	static bool initialized;
 
 public:
-	UniqCounterFirstApproach() : hasherBigNumber(Primes::next(-100)), n(0) {	
+	UniqCounterFirstApproach() : n(0) {	
+		hasherBigNumber.rehash();
 		if (!initialized) {
 			initialized = true;
 			fprintf(stderr, "\nUniqCounterFirstApproach(%d) : %ld bytes per set::node => store %d elements\n", BYTES, sizeof(std::set<int>::node_type), N);
@@ -42,7 +43,7 @@ public:
 			return s.size(); // exact small answers
 		auto result = round((double)(1ULL << 32) / *s.rbegin() * N) - 1; // use N-th ordered statistic 
 		if (result < 3 * N) {
-			fprintf(stderr, "extremal case: %g < 3 * %d\n", result, N);
+			// fprintf(stderr, "extremal case: %g < 3 * %d\n", result, N);
 			int k = N / 2;
 			auto it = s.begin();
 			for (int i = 0; i < k - 1; i++)
@@ -57,3 +58,4 @@ public:
 };
 
 template<const int BYTES> bool UniqCounterFirstApproach<BYTES>::initialized = false;
+template<const int BYTES> HasherP UniqCounterFirstApproach<BYTES>::hasherBigNumber(Primes::next(-110)); 

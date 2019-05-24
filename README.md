@@ -62,7 +62,14 @@
 [(java)](https://github.com/prasanthj/hyperloglog/blob/master/src/java/com/github/prasanthj/hll/HyperLogLog.java), 
 [(cs | microsoft)](https://github.com/microsoft/CardinalityEstimation/blob/master/CardinalityEstimation/CardinalityEstimator.cs).
 
-# Моя реализация
+# Мои реализации
 
 По [условию](statement.txt) нам дают 32К памяти, структура данных должна оперировать с 32-битными целыми числами. 
 
+### [ucFirstApproach.h](ucFirstApproach.h) 
+
+* Хранение set-а $n$ = 32К / sizeof(set::node) = 2048 минимальных чисел
+
+* Результат выражается из $n$-й порядковой статистики
+
+* Получается $10^6$ запросов за ~0.1 секунд, средняя погрешность в пределах 1.5%, максимальная в пределах 4%.

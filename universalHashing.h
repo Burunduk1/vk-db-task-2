@@ -4,14 +4,14 @@
 
 struct Primes {
 	static bool is(uint32_t x) {
-		for (uint32_t i = 2; i * i <= x; i++)
+		for (uint32_t i = 3; i * i <= x; i += 2)
 			if (x % i == 0)
 				return 0;
-		return x >= 2u;
+		return x == 2 || (x > 2 && x % 2 != 0);
 	}
 	static uint32_t next(uint32_t p) {
-		while (!is(p))
-			p++;
+		for (p += 1 - p % 2; !is(p); p += 2)
+			;
 		return p;
 	}
 };
@@ -22,11 +22,14 @@ class HasherPrime {
 	uint32_t p, a, b;
 
 public:
-	HasherPrime(uint32_t p) : p(p) {
+	void rehash() {
 		do {
 			a = gen() % p;
 		} while (!a);
 		b = gen() % p;
+	}
+	HasherPrime(uint32_t p) : p(p) {
+		rehash();
 	}
 	uint32_t operator() (uint32_t x) {
 		return ((uint64_t)x * a + b) % p;
@@ -53,6 +56,9 @@ class HasherP {
 
 public:
 	HasherP(int32_t m) : hasher(Primes::next(m)) {
+	}
+	void rehash() {
+		hasher.rehash();
 	}
 	uint32_t operator() (uint32_t x) {
 		return hasher(x);
