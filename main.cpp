@@ -9,9 +9,12 @@
 
 int main() {
 	try {
-		const int N = 32 << 10;
+		const int N = 1 << 15;
 		// test<UniqCounterTrivial>();
+		test<UniqCounterFirstApproach<1 << 9>>();
+		test<UniqCounterFirstApproach<1 << 12>>();
 		test<UniqCounterFirstApproach<N>>();
+		test<UniqCounterFirstApproach<1 << 17>>();
 		// test<UniqCounterHyperLogLog<N>>();
 		// test<UniqCounterHyperBitBit>();
 	} catch (const char* msg) {

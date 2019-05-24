@@ -1,8 +1,8 @@
 #pragma once
 
 #include "uniquecounter.h"
-#include "timer.h"
 #include "randomNumbers.h"
+#include "timer.h"
 
 #include <unordered_set>
 #include <vector>
@@ -14,11 +14,11 @@ template<typename SolutionType> void test() {
 		return abs(got - expected) / (double) expected;
 	};
 
-	const int N = (int)3e6;
+	const int N = 1e6;
 	printf("test solution '%s' with N = %d\n", SolutionType().getName(), N);
 	std::vector<int> test(N);
 	std::mt19937 gen = newGen();
-	for (int k : {N / 10, N / 2, N, 2 * N, N * 10}) {
+	for (int k : {1, 10, 1000, 10000, N / 10, N / 2, N, 2 * N, N * 10}) {
 	// for (int k : {10, 1000, 10000, N / 10, N, N * 10, N * 100}) {
 		std::uniform_int_distribution<> dis(1, k);
 		for (int &x : test) {
@@ -36,7 +36,7 @@ template<typename SolutionType> void test() {
 
 		int expected = std::unordered_set<int>(test.begin(), test.end()).size();
 		double error = relative_error(expected, counter_result);
-		printf("%d uniq, %g relative error\n", expected, error);
+		printf("%d uniq, %.6f relative error\n", expected, error);
 		// assert(error <= 0.1);
 	}
 }

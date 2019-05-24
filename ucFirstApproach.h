@@ -1,21 +1,37 @@
+// idea: 
+//		generate x_1...x_n uniformly in 1..M
+//		k-th ordered statistic approximation = M*k/(n+1) 
+//		appoximation of n = M/(k-th statistic)-1
+
 #pragma once
 
 #include "uniquecounter.h"
+#include "universalHashing.h"
 
 #include <set>
+#include <cmath>
 
 template<const int BYTES>
 class UniqCounterFirstApproach : public UniqCounterInterface {
-	static const size_t N = BYTES / sizeof(std::set<int>::node_type); 
-	static const unsigned A = 1e9 + 7, B = 3e8; // hash function: x --> x*A+B mod 2^{32}
+	static const int N = BYTES / sizeof(std::set<int>::node_type); 
+	HasherP hasherBigNumber; 
 	std::set<unsigned> s;
 	int n;
+	
+	static bool initialized;
+
 public:
-	UniqCounterFirstApproach() : n(0) {
-		fprintf(stderr, "%ld bytes per set::node, store %ld elements\n", sizeof(std::set<int>::node_type), N);
-	}
+	UniqCounterFirstApproach() : hasherBigNumber(Primes::next(-100)), n(0) {	
+		if (!initialized) {
+			initialized = true;
+			fprintf(stderr, "\nUniqCounterFirstApproach(%d) : %ld bytes per set::node => store %d elements\n", BYTES, sizeof(std::set<int>::node_type), N);
+		}
+	} 
+
 	void add(int x) {
-		unsigned hashValue = (unsigned)x * A + B;
+		uint32_t hashValue = hasherBigNumber(x);
+		// uint32_t hashValue = HasherTrivial::get(x);
+		// uint32_t hashValue = (uint32_t)(1e9 + 7) * (uint32_t)x + (uint32_t)3e8;
 		s.insert(hashValue);
 		if (s.size() > N)
 			s.erase(--s.end());
@@ -24,9 +40,20 @@ public:
 	int get_uniq_num() const {
 		if (s.size() < N) 
 			return s.size(); // exact small answers
-		return ((double)(1ULL << 32) / *s.rbegin() * N + 0.5) - 1; // use N-th ordered statistic
+		auto result = round((double)(1ULL << 32) / *s.rbegin() * N) - 1; // use N-th ordered statistic 
+		if (result < 3 * N) {
+			fprintf(stderr, "extremal case: %g < 3 * %d\n", result, N);
+			int k = N / 2;
+			auto it = s.begin();
+			for (int i = 0; i < k - 1; i++)
+				++it;
+			return round((double)(1ULL << 32) / *it * k) - 1; // use (N/2)-th ordered statistic 
+		}
+		return result;
 	}
 	const char* getName() const {
-		return "trivial";
+		return "firstApproach";
 	}
 };
+
+template<const int BYTES> bool UniqCounterFirstApproach<BYTES>::initialized = false;
