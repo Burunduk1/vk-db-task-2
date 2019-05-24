@@ -8,8 +8,7 @@
 #include <cassert>
 
 template<typename SolutionType> void test() {
-	std::random_device rd;
-	std::mt19937 gen(rd());
+	std::mt19937 gen(std::chrono::system_clock::now().time_since_epoch().count());
 
 	auto relative_error = [&](int expected, int got) {
 		return abs(got - expected) / (double) expected;
@@ -31,7 +30,7 @@ template<typename SolutionType> void test() {
 		int expected = (int) all.size();
 		int counter_result = counter.get_uniq_num();
 		double error = relative_error(expected, counter_result);
-		printf("%d numbers in range [1..%d], %gns, %d uniq, %d result, %g relative error\n", 
+		printf("%d numbers in range [1..%d], %gs, %d uniq, %d result, %g relative error\n", 
 			N, k, nanos * 1e-9, expected, counter_result, error);
 		assert(error <= 0.1);
 	}
