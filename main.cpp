@@ -7,9 +7,12 @@
 #include <set>
 
 int main() {
-	// printf("%ld\n", sizeof(std::set<int>::node_type));
-	// return 0;
 	// test<UniqCounterTrivial>();
-	test<UniqCounterFirstApproach>();
-	test<UniqCounterHyperLogLog>();
+	try {
+		const int N = 32 << 10;
+		// test<UniqCounterFirstApproach<N>>();
+		test<UniqCounterHyperLogLog<N>>();
+	} catch (const char* msg) {
+		fprintf(stderr, "catched error: %s\n", msg);
+	}
 }
