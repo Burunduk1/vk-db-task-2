@@ -2,6 +2,9 @@
 // Hyperloglog: The analysis of a near-optimal cardinality estimation algorithm. 
 // In Analysis of Algorithms (AOFA), pages 127–146, 2007.
 
+// uses sketch M 8-bit sketches, uses all other 32*1024-M bytes to store small answers
+// can not stably give even 10% relative error for all M = 2^{5..14} 
+
 #pragma once
 
 #include "uniquecounter.h"
@@ -14,8 +17,8 @@
 template<const int BYTES_>
 class UniqCounterHyperLogLog : public UniqCounterInterface {
 	static const int BYTES = BYTES_ - 128; // additional O(1) <= 128 bytes
-	static const int M = 1 << 5; // cells to store sketches
-	static const int smallN = 101;//(BYTES - M) / 4; // while cardinality of set < smallN, store all the set
+	static const int M = 1 << 13; // cells to store sketches
+	static const int smallN = (BYTES - M) / 4; // while cardinality of set < smallN, store all the set
 
 	uint8_t bytes[BYTES]; 
 	uint8_t *m; // m[M]
@@ -35,19 +38,11 @@ public:
 	}
 	void add(int x) {
 		if (n < smallN) {
-			// if (std::find(data, data + n, x) != data + n)
-			// 	return;
 			int i = std::lower_bound(data, data + n, x) - data;
 			if (i < n && data[i] == x)
 				return;
-			// printf("insert(%d) to ", x);
-			// for (int i = 0; i < n; i++) printf("%d ", data[i]);
-			// printf(" --> ");
 			memmove(data + i + 1, data + i, sizeof(data[0]) * (n - i));
 			data[i] = x, n++;
-			// for (int i = 0; i < n; i++) printf("%d ", data[i]);
-			// printf("\n");
-			// assert(n < 10);
 			if (n == smallN) {
 				std::fill(m, m + M, 0);
 				for (int i = 0; i < n; i++)
@@ -66,8 +61,6 @@ public:
 			if (m[i] > 0)
 				cnt.at(m[i])++;
 		double sum = 0, power = 1;
-		// for (int i = 1; i <= 10; i++) 
-		// 	printf("cnt[%d] = %d of %d\n", i, cnt[i], M);
 		for (int i = 1; i <= BITS; i++) {
 			power *= 0.5;
 			sum += power * cnt[i];

@@ -18,7 +18,8 @@ template<typename SolutionType> void test() {
 	printf("test solution '%s' with N = %d\n", SolutionType().getName(), N);
 	std::vector<int> test(N);
 	std::mt19937 gen = newGen();
-	for (int k : {10, 1000, 10000, N / 10, N, N * 10, N * 100}) {
+	for (int k : {N / 10, N / 2, N, 2 * N, N * 10}) {
+	// for (int k : {10, 1000, 10000, N / 10, N, N * 10, N * 100}) {
 		std::uniform_int_distribution<> dis(1, k);
 		for (int &x : test) {
 			x = dis(gen);

@@ -12,8 +12,8 @@ int main() {
 	try {
 		const int N = 32 << 10;
 		// test<UniqCounterFirstApproach<N>>();
-		// test<UniqCounterHyperLogLog<N>>();
-		test<UniqCounterHyperBitBit>();
+		test<UniqCounterHyperLogLog<N>>();
+		// test<UniqCounterHyperBitBit>();
 	} catch (const char* msg) {
 		fprintf(stderr, "catched error: %s\n", msg);
 	}
