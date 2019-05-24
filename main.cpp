@@ -10,8 +10,8 @@ int main() {
 	// test<UniqCounterTrivial>();
 	try {
 		const int N = 32 << 10;
-		// test<UniqCounterFirstApproach<N>>();
-		test<UniqCounterHyperLogLog<N>>();
+		test<UniqCounterFirstApproach<N>>();
+		// test<UniqCounterHyperLogLog<N>>();
 	} catch (const char* msg) {
 		fprintf(stderr, "catched error: %s\n", msg);
 	}

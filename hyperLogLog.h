@@ -1,3 +1,7 @@
+// P. Flajolet, Éric Fusy, O. Gandouet, and F. Meunier. 
+// Hyperloglog: The analysis of a near-optimal cardinality estimation algorithm. 
+// In Analysis of Algorithms (AOFA), pages 127–146, 2007.
+
 #pragma once
 
 #include "uniquecounter.h"
@@ -9,11 +13,11 @@
 
 template<const int BYTES_>
 class UniqCounterHyperLogLog : public UniqCounterInterface {
-	static const int BYTES = BYTES_ - 512; // additional O(1) <= 512
-	static const int M = 1 << 14; // cells to store sketches
-	static const int smallN = (BYTES - M) / 4; // while cardinality of set < smallN, store all the set
+	static const int BYTES = BYTES_ - 128; // additional O(1) <= 128 bytes
+	static const int M = 1 << 5; // cells to store sketches
+	static const int smallN = 101;//(BYTES - M) / 4; // while cardinality of set < smallN, store all the set
 
-	uint8_t bytes[BYTES];
+	uint8_t bytes[BYTES]; 
 	uint8_t *m; // m[M]
 	int32_t n, *data; // data[smallN]
 	Hasher hasherToM;
@@ -62,13 +66,15 @@ public:
 			if (m[i] > 0)
 				cnt.at(m[i])++;
 		double sum = 0, power = 1;
+		// for (int i = 1; i <= 10; i++) 
+		// 	printf("cnt[%d] = %d of %d\n", i, cnt[i], M);
 		for (int i = 1; i <= BITS; i++) {
 			power *= 0.5;
 			sum += power * cnt[i];
 		}
-		//static const double alpha = 0.7213 / (1 + 1.079 / M);
-		static const double alpha = 0.72129999569229; // (16384 * int x=0..\infty (log_2(2 + x) -  log_2(1 + x))^{16384} dx)^{-1}
-		printf("sum = %.10f, alpha = %g\n", sum, alpha);
+		static const double alpha = 0.7213 / (1 + 1.079 / M); // formula from open sources
+		// static const double alpha = 0.72129999569229; // (16384 * int x=0..\infty (log_2(2 + x) - log_2(1 + x))^{16384} dx)^{-1}
+		printf("sum = %.10f, alpha = %.6f\n", sum, alpha);
 		return alpha * M * M / sum;
 	}
 	const char* getName() const {
