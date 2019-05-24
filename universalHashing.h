@@ -4,23 +4,25 @@
 
 // unsigned --> 0..p-1, p should be prime
 class HasherPrimeM {
-	unsigned p, a, b;
+	static std::mt19937 gen;
+	uint32_t p, a, b;
 
 public:
 	HasherPrimeM(int p) : p(p) {
-		do
+		do {
 			a = gen() % p;
-		while (!a);
+		} while (!a);
 		b = gen() % p;
 	}
-	int operator() (unsigned x) {
-		return ((unsigned long long)x * a + b) % p;
+	uint32_t operator() (uint32_t x) {
+		return ((uint64_t)x * a + b) % p;
 	}
 };
+std::mt19937 HasherPrimeM::gen = newGen();
 
 // unsigned --> 0..m-1
 class Hasher {
-	int m;
+	int32_t m;
 	HasherPrimeM hasher;
 
 	bool isPrime(int x) {
@@ -35,9 +37,9 @@ class Hasher {
 		return p;
 	}
 public:
-	Hasher(int m) : m(m), hasher(nextPrime(m)) {
+	Hasher(int32_t m) : m(m), hasher(nextPrime(m)) {
 	}
-	int operator() (unsigned x) {
+	int operator() (uint32_t x) {
 		return hasher(x) % m;
 	}
 };

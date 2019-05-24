@@ -1,3 +1,5 @@
 #include "randomNumbers.h"
 
-std::mt19937 gen(std::chrono::system_clock::now().time_since_epoch().count());
+std::mt19937 newGen() {
+	return std::mt19937(std::chrono::system_clock::now().time_since_epoch().count());
+}

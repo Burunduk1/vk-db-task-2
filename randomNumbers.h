@@ -3,4 +3,4 @@
 #include <random>
 #include <chrono>
 
-extern std::mt19937 gen;
+std::mt19937 newGen();
