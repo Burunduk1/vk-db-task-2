@@ -2,6 +2,8 @@
 //		generate x_1...x_n uniformly in 1..M
 //		k-th ordered statistic approximation = M*k/(n+1) 
 //		appoximation of n = M/(k-th statistic)-1
+// data structure:
+//		set<uint32_t>
 
 #pragma once
 
@@ -15,7 +17,7 @@ template<const int BYTES>
 class UniqCounterFirstApproach : public UniqCounterInterface {
 	static const int N = BYTES / sizeof(std::set<int>::node_type); 
 	static HasherP hasherBigNumber; 
-	std::set<unsigned> s;
+	std::set<uint32_t> s;
 	int n;
 	
 	static bool initialized;
@@ -41,14 +43,17 @@ public:
 	int get_uniq_num() const {
 		if (s.size() < N) 
 			return s.size(); // exact small answers
-		auto result = round((double)(1ULL << 32) / *s.rbegin() * N) - 1; // use N-th ordered statistic 
+		auto statistic = [&](int k, uint32_t x) {
+			return round((double)hasherBigNumber.range() / x * k) - 1;
+		};
+		auto result = statistic(N, *s.rbegin());
 		if (result < 3 * N) {
 			// fprintf(stderr, "extremal case: %g < 3 * %d\n", result, N);
 			int k = N / 2;
 			auto it = s.begin();
 			for (int i = 0; i < k - 1; i++)
 				++it;
-			return round((double)(1ULL << 32) / *it * k) - 1; // use (N/2)-th ordered statistic 
+			return statistic(k, *it);
 		}
 		return result;
 	}

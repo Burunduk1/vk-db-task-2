@@ -34,19 +34,25 @@ public:
 	uint32_t operator() (uint32_t x) {
 		return ((uint64_t)x * a + b) % p;
 	}
+	uint32_t range() {
+		return p;
+	}
 };
 std::mt19937 HasherPrime::gen = newGen();
 
 // uint32 --> 0..m-1
 class Hasher {
-	int32_t m;
+	uint32_t m;
 	HasherPrime hasher;
 
 public:
-	Hasher(int32_t m) : m(m), hasher(Primes::next(m)) {
+	Hasher(uint32_t m) : m(m), hasher(Primes::next(m)) {
 	}
 	uint32_t operator() (uint32_t x) {
 		return hasher(x) % m;
+	}
+	uint32_t range() {
+		return m;
 	}
 };
 
@@ -62,6 +68,9 @@ public:
 	}
 	uint32_t operator() (uint32_t x) {
 		return hasher(x);
+	}
+	uint32_t range() {
+		return hasher.range();
 	}
 };
 
