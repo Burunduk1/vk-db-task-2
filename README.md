@@ -16,7 +16,7 @@
 	У Седжвика в конце описан алгоритм **HyperBitBit**. Теоретический анализ алгоритма, судя по [отсутствию](https://arxiv.org/search/?searchtype=all&query=Sedgewick&abstracts=show&size=50&order=-submitted_date)
 	свежих публикаций по теме от Роберта Седжвика, на момент 24 мая 2019 не опубликован.
 
-	Во втором обзоре описаны **minCount** и *AKMV*, которые оказались близки к моим идеям.
+	Во втором обзоре описаны **minCount** и **AKMV**, которые оказались близки к моим идеям.
 
 * Общие слова по теме:
 
@@ -41,14 +41,14 @@
 
 	(2013) Authors: {Heule, Nunkesser, Hall}, [HyperLogLog in Practice](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/40671.pdf)
 
-* Классическая теоретическая работа об $F_p$ для $p > 0$ (мы сейчас считаем $F_0$).
-
-	(2010) Authors: {Kane, Nelson, Woodruff}, [Fast Moment Estimation in Data Streams in Optimal Space](https://arxiv.org/pdf/1007.4191.pdf)
-
 * Дополнительно можно смотреть на работы, цитирующие основные статьи от [2002](https://dl.acm.org/citation.cfm?id=711822) и
 	[2010](https://dl.acm.org/citation.cfm?id=1807094).<br>
 	Также https://arxiv.org/search/ даёт смежные работы по теме: [(1)](https://arxiv.org/abs/1810.12388),
 	[(2)](https://arxiv.org/abs/1804.01642), [(3)](https://arxiv.org/abs/1402.6800).
+
+	(2010) Authors: {Kane, Nelson, Woodruff}, [Fast Moment Estimation in Data Streams in Optimal Space](https://arxiv.org/pdf/1007.4191.pdf), $F_{p>0}$.
+
+	(2015) Authors: {Cohen}, [HIP Estimators for Massive Graphs Analysis](https://arxiv.org/pdf/1306.3284.pdf)
 
 ### Выбранные решения, существующие реализации
 
