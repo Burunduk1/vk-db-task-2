@@ -2,6 +2,7 @@
 
 #include "ucTrivialSolution.h"
 #include "ucHyperLogLog.h"
+#include "ucHyperLogLog2.h"
 #include "ucHyperBitBit.h"
 #include "ucFirstApproach.h"
 #include "ucHeapAKMV.h"
@@ -20,8 +21,9 @@ int main() {
 		// test<UniqCounterHyperBitBit>();
 		// analyse<UniqCounterAKMV<BYTES>>(N, iters);
 		// analyseError<UniqCounterAKMV<BYTES>>(N, iters);
-		analyse<UniqCounterFirstApproach<BYTES>>(N, iters);
-		analyseError<UniqCounterFirstApproach<BYTES>>(N, iters);
+		// analyse<UniqCounterFirstApproach<BYTES>>(N, iters);
+		// analyseError<UniqCounterFirstApproach<BYTES>>(N, iters);
+		analyseError<UniqCounterHyperLogLog2>(N, iters);
 	} catch (const char* msg) {
 		fprintf(stderr, "catched error: %s\n", msg);
 	}
