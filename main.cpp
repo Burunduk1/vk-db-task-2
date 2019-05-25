@@ -11,7 +11,7 @@
 
 int main() {
 	try {
-		const int BYTES = 1 << 15, N = 1e5, iters = 3e6;
+		const int BYTES = 1 << 15, N = 1e5, iters = 1e7;
 		// test<UniqCounterTrivial>();
 		// test<UniqCounterFirstApproach<1 << 9>>();
 		// test<UniqCounterFirstApproach<1 << 12>>();
@@ -23,7 +23,12 @@ int main() {
 		// analyseError<UniqCounterAKMV<BYTES>>(N, iters);
 		// analyse<UniqCounterFirstApproach<BYTES>>(N, iters);
 		// analyseError<UniqCounterFirstApproach<BYTES>>(N, iters);
-		analyseError<UniqCounterHyperLogLog2>(N, iters);
+		
+		analyse<UniqCounterHyperLogLog<8>>(N, iters);
+		analyseError<UniqCounterHyperLogLog<8>>(N, iters);
+
+		analyse<UniqCounterHyperLogLog<14>>(N, iters);
+		analyseError<UniqCounterHyperLogLog<14>>(N, iters);
 	} catch (const char* msg) {
 		fprintf(stderr, "catched error: %s\n", msg);
 	}

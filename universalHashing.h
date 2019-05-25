@@ -48,6 +48,9 @@ class Hasher {
 public:
 	Hasher(uint32_t m) : m(m), hasher(Primes::next(m)) {
 	}
+	void rehash() {
+		hasher.rehash();
+	}
 	uint32_t operator() (uint32_t x) {
 		return hasher(x) % m;
 	}
