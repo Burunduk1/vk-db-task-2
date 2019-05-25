@@ -21,14 +21,14 @@ int main() {
 		// test<UniqCounterHyperBitBit>();
 		// analyse<UniqCounterAKMV<BYTES>>(N, iters);
 		// analyseError<UniqCounterAKMV<BYTES>>(N, iters);
-		// analyse<UniqCounterFirstApproach<BYTES>>(N, iters);
-		// analyseError<UniqCounterFirstApproach<BYTES>>(N, iters);
+		analyse<UniqCounterFirstApproach<BYTES>>(N, iters);
+		analyseError<UniqCounterFirstApproach<BYTES>>(N, iters);
 		
-		analyse<UniqCounterHyperLogLog<8>>(N, iters);
-		analyseError<UniqCounterHyperLogLog<8>>(N, iters);
+		// analyse<UniqCounterHyperLogLog<8>>(N, iters);
+		// analyseError<UniqCounterHyperLogLog<8>>(N, iters);
 
-		analyse<UniqCounterHyperLogLog<14>>(N, iters);
-		analyseError<UniqCounterHyperLogLog<14>>(N, iters);
+		// analyse<UniqCounterHyperLogLog<14>>(N, iters);
+		// analyseError<UniqCounterHyperLogLog<14>>(N, iters);
 	} catch (const char* msg) {
 		fprintf(stderr, "catched error: %s\n", msg);
 	}

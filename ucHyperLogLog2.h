@@ -3,7 +3,7 @@
 //
 // can not stably give even 10% relative error for all B in [5..15]
 
-/** Experiment's results
+/** Experiment's results for a_i in [1..k]
 
 b = 2^{15}
 	test solution 'HyperLogLog by Hideaki Ohno' with N = 1000000, 6 ks, 16 tests

@@ -2,6 +2,7 @@
 //		generate x_1...x_n uniformly in 1..M
 //		k-th ordered statistic approximation = M*k/(n+1) 
 //		appoximation of n = M/(k-th statistic)-1
+//
 // data structure:
 //		heap<uint32_t>
 

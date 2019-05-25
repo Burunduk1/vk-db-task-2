@@ -7,7 +7,7 @@
 //
 // can not stably give even 10% relative error for all B in [5..14]
 
-/** Experiment's results
+/** Experiment's results for a_i in [1..k]
 
 B = 8, M = 256, smallN = 8096
 	test solution 'hyperLogLog' with N = 100000, 6 ks, 16 tests

@@ -43,12 +43,12 @@ auto run(const std::vector<int> &test) {
 	return std::make_pair(counter_result, t.time());
 }
 
-#define ERROR_ASSERT 
-// #define ERROR_ASSERT \
-// 	if (error > 0.3) { \
-// 		fprintf(stderr, "N = %d, k = %d, expected = %d, error = %g\n", N, k, expected, error); \
-// 		throw "error > 0.3"; \
-// 	}
+// #define ERROR_ASSERT 
+#define ERROR_ASSERT \
+	if (error > 0.3) { \
+		fprintf(stderr, "N = %d, k = %d, expected = %d, error = %g\n", N, k, expected, error); \
+		throw "error > 0.3"; \
+	}
 
 template<typename SolutionType> void test() {
 	const int N = 1e6;

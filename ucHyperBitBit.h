@@ -1,6 +1,14 @@
-// https://www.cs.princeton.edu/~rs/talks/Cardinality.pdf
-
-// uses 144 bits (64+64+16), gives ~10-20% error with p ~= 0.5 for big N
+// based on
+//		https://www.cs.princeton.edu/~rs/talks/Cardinality.pdf
+//
+// uses 18 bytes = 144 bits (64+64+16), gives ~10-20% error with probability ~= 0.5 for big N
+//
+// using
+// 		if we have 32K, we can do 32K/18 ~= 1800 instances of this structure, result = average or median
+// 		then it will work even longer than ucHeapAKMV.h
+//
+// conclusion
+//		will give bad error or bad time, can not be used
 
 #pragma once
 
