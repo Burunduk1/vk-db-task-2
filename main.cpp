@@ -10,7 +10,7 @@
 
 int main() {
 	try {
-		const int BYTES = 1 << 15, N = 1e6, iters = 1e8;
+		const int BYTES = 1 << 15, N = 1e5, iters = 3e6;
 		// test<UniqCounterTrivial>();
 		// test<UniqCounterFirstApproach<1 << 9>>();
 		// test<UniqCounterFirstApproach<1 << 12>>();
@@ -18,8 +18,8 @@ int main() {
 		// test<UniqCounterFirstApproach<1 << 17>>();
 		// test<UniqCounterHyperLogLog<BYTES>>();
 		// test<UniqCounterHyperBitBit>();
-		analyse<UniqCounterAKMV<BYTES>>(N, iters);
-		analyseError<UniqCounterAKMV<BYTES>>(N, iters);
+		// analyse<UniqCounterAKMV<BYTES>>(N, iters);
+		// analyseError<UniqCounterAKMV<BYTES>>(N, iters);
 		analyse<UniqCounterFirstApproach<BYTES>>(N, iters);
 		analyseError<UniqCounterFirstApproach<BYTES>>(N, iters);
 	} catch (const char* msg) {

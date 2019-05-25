@@ -34,7 +34,7 @@ public:
 	uint32_t operator() (uint32_t x) {
 		return ((uint64_t)x * a + b) % p;
 	}
-	uint32_t range() {
+	uint32_t range() const {
 		return p;
 	}
 };
@@ -51,7 +51,7 @@ public:
 	uint32_t operator() (uint32_t x) {
 		return hasher(x) % m;
 	}
-	uint32_t range() {
+	uint32_t range() const {
 		return m;
 	}
 };
@@ -69,15 +69,40 @@ public:
 	uint32_t operator() (uint32_t x) {
 		return hasher(x);
 	}
-	uint32_t range() {
+	uint32_t range() const {
 		return hasher.range();
+	}
+};
+
+// FAILED: makes error of ucFirstApproach.h >0.3
+// uint32 --> uint32
+class Hasher32 {
+	static const uint32_t m = 1 << 16;
+	HasherPrime h1, h2;
+
+public:
+	Hasher32() : h1(Primes::next(m)), h2(h1.range()) {
+	}
+	void rehash() {
+		h1.rehash();
+		h2.rehash();
+	}
+	uint32_t operator() (uint32_t x) {
+		// return h1(x) + (h2(x) << 16);
+		return (h1(x) & (m - 1)) + ((h2(x) & (m - 1)) << 16);
+	}
+	uint64_t range() const {
+		return 1ULL << 32;
 	}
 };
 
 // uint32 --> uint32
 struct HasherTrivial {
 	static const unsigned A = 1e9 + 7, B = 3e8;
-	static uint32_t get(uint32_t x) {
+	uint32_t operator() (uint32_t x) {
 		return A * x + B;
+	}
+	uint64_t range() const {
+		return 1ULL << 32;
 	}
 };

@@ -12,11 +12,15 @@
 
 #include <set>
 #include <cmath>
+#include <utility>
 
 template<const int BYTES>
 class UniqCounterFirstApproach : public UniqCounterInterface {
 	static const int N = BYTES / sizeof(std::set<int>::node_type); 
-	static HasherP hasherBigNumber; 
+	static HasherP hasher32; 
+	// Hasher32 hasher32; 
+	// HasherTrivial hasher32; 
+	// std::hash<int> hasher32;
 	std::set<uint32_t> s;
 	int n;
 	
@@ -24,17 +28,15 @@ class UniqCounterFirstApproach : public UniqCounterInterface {
 
 public:
 	UniqCounterFirstApproach() : n(0) {	
-		hasherBigNumber.rehash();
 		if (!initialized) {
 			initialized = true;
 			fprintf(stderr, "\nUniqCounterFirstApproach(%d) : %ld bytes per set::node => store %d elements\n", BYTES, sizeof(std::set<int>::node_type), N);
 		}
+		hasher32.rehash();
 	} 
 
 	void add(int x) {
-		uint32_t hashValue = hasherBigNumber(x);
-		// uint32_t hashValue = HasherTrivial::get(x);
-		// uint32_t hashValue = (uint32_t)(1e9 + 7) * (uint32_t)x + (uint32_t)3e8;
+		uint32_t hashValue = hasher32(x);
 		s.insert(hashValue);
 		if (s.size() > N)
 			s.erase(--s.end());
@@ -44,11 +46,10 @@ public:
 		if (s.size() < N) 
 			return s.size(); // exact small answers
 		auto statistic = [&](int k, uint32_t x) {
-			return round((double)hasherBigNumber.range() / x * k) - 1;
+			return round((double)hasher32.range() / x * k) - 1; // (1ULL << 32)
 		};
 		auto result = statistic(N, *s.rbegin());
 		if (result < 3 * N) {
-			// fprintf(stderr, "extremal case: %g < 3 * %d\n", result, N);
 			int k = N / 2;
 			auto it = s.begin();
 			for (int i = 0; i < k - 1; i++)
@@ -63,4 +64,4 @@ public:
 };
 
 template<const int BYTES> bool UniqCounterFirstApproach<BYTES>::initialized = false;
-template<const int BYTES> HasherP UniqCounterFirstApproach<BYTES>::hasherBigNumber(Primes::next(-110)); 
+template<const int BYTES> HasherP UniqCounterFirstApproach<BYTES>::hasher32(Primes::next(-80)); 
